@@ -11,7 +11,6 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 1)
   map_public_ip_on_launch = true
-  availability_zone       = "us-east-1"
 }
 
 resource "aws_internet_gateway" "main" {
@@ -63,7 +62,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_tls" {
   cidr_ipv4         = aws_vpc.main.cidr_block
   from_port         = 443
   to_port           = 443
-  ip_protocol          = "tcp"
+  ip_protocol       = "tcp"
 
 }
 

@@ -13,6 +13,12 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 }
 
+resource "aws_subnet" "private" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 2)
+  map_public_ip_on_launch = false
+}
+
 resource "aws_internet_gateway" "main" {
 
   vpc_id = aws_vpc.main.id
@@ -37,12 +43,22 @@ resource "aws_route_table" "route_table" {
 
 }
 
+resource "aws_route_table" "private_route_table" {
+  vpc_id = aws_vpc.main.id
+}
+
+resource "aws_route_table_association" "private_subnet_route" {
+  subnet_id = aws_subnet.private.id
+
+  route_table_id = aws_route_table.private_route_table.id
+
+}
+
 
 resource "aws_route_table_association" "subnet_route" {
   subnet_id = aws_subnet.public.id
 
   route_table_id = aws_route_table.route_table.id
-
 }
 
 

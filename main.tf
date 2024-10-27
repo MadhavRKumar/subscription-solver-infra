@@ -91,7 +91,7 @@ resource "aws_db_instance" "postgres" {
   storage_type                = "gp2"
   engine                      = "postgres"
   engine_version              = "16.4"
-  instance_class              = "db.t2.micro"
+  instance_class              = "db.m5"
   parameter_group_name        = "default.postgres16.4"
   manage_master_user_password = true
   username                    = "main"

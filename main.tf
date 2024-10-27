@@ -17,36 +17,13 @@ resource "aws_ecs_service" "my_service" {
   }
 }
 
-// @TODO: allow ecs to pull images from ghcr.io
 resource "aws_ecs_task_definition" "my_task" {
   family = "my-task"
   container_definitions = jsonencode([{
-    name      = "subscription-solver-frontend"
-    image     = "gchr.io/madhavrkumar/subscription-solver-frontend:main"
-    cpu       = 256
-    memory    = 512
-    essential = true
-    portMappings = [{
-      containerPort = 80
-      hostPort      = 8000
-    }]
-    },
-    {
-      name      = "subscription-solver-backend"
-      image     = "gchr.io/madhavrkumar/subscription-solver:main"
-      cpu       = 256
-      memory    = 512
-      essential = true
-      environment = [
-        {
-          name  = "POSTGRES_URL"
-          value = aws_db_instance.main.address
-        },
-      ]
-      portMappings = [{
-        containerPort = 8080
-        hostPort      = 8080
-      }]
+    name   = "dummy-task"
+    image  = "busybox"
+    cpu    = 256
+    memory = 512
     },
   ])
   requires_compatibilities = ["FARGATE"]
@@ -106,14 +83,14 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
 
 
 ///// RDS Instance
-resource "aws_db_instance" "main" {
+resource "aws_db_instance" "postgres" {
   identifier                  = "main"
   allocated_storage           = 10
   storage_type                = "gp2"
-  engine                      = "mysql"
+  engine                      = "postgres"
   engine_version              = "8.0"
   instance_class              = "db.t2.micro"
-  parameter_group_name        = "default.mysql8.0"
+  parameter_group_name        = "default.postgres8.0"
   manage_master_user_password = true
   username                    = "main"
   tags = {

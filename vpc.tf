@@ -87,3 +87,28 @@ resource "aws_vpc_security_group_egress_rule" "allow_all" {
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
+
+
+resource "aws_security_group" "allow_rds_access" {
+  name        = "allow_rds_access"
+  description = "Allow RDS access"
+  vpc_id      = aws_vpc.main.id
+
+  tags = {
+    Name = "allow_rds_access"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_rds_access" {
+  security_group_id = aws_security_group.allow_rds_access.id
+  cidr_ipv4         = aws_vpc.main.cidr_block
+  from_port         = 5432
+  to_port           = 5432
+  ip_protocol       = "tcp"
+}
+
+resource "aws_vpc_security_group_egress_rule" "allow_rds_access" {
+  security_group_id = aws_security_group.allow_rds_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}

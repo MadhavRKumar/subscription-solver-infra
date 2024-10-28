@@ -92,7 +92,6 @@ resource "aws_vpc_security_group_egress_rule" "allow_all" {
 resource "aws_security_group" "allow_rds_access" {
   name        = "allow_rds_access"
   description = "Allow RDS access"
-  vpc_id      = aws_vpc.main.id
 
   tags = {
     Name = "allow_rds_access"

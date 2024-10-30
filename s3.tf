@@ -7,10 +7,6 @@ resource "aws_s3_bucket" "frontend-bucket" {
 
 }
 
-resource "aws_s3_bucket_public_access_block" "frontend-bucket-public-access-block" {
-  bucket = aws_s3_bucket.frontend-bucket.bucket
-}
-
 resource "aws_s3_bucket_policy" "frontend-bucket-policy" {
   bucket = aws_s3_bucket.frontend-bucket.bucket
   policy = jsonencode({

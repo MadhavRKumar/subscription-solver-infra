@@ -7,6 +7,36 @@ resource "aws_s3_bucket" "frontend-bucket" {
 
 }
 
+resource "aws_s3_bucket_public_access_block" "frontend-bucket-public-access-block" {
+  bucket = aws_s3_bucket.frontend-bucket.bucket
+}
+
+resource "aws_s3_bucket_policy" "frontend-bucket-policy" {
+  bucket = aws_s3_bucket.frontend-bucket.bucket
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          "Service" : "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject"
+        ],
+        Resource = [
+          "${aws_s3_bucket.frontend-bucket.arn}/*"
+        ],
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.frontend-distribution.arn
+          }
+        }
+      }
+    ]
+  })
+}
+
 resource "aws_s3_bucket_versioning" "frontend-bucket-versioning" {
   bucket = aws_s3_bucket.frontend-bucket.bucket
   versioning_configuration {

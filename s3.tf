@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "frontend-bucket" {
-  bucket = "frontend-bucket"
+  bucket_prefix = "subscription-frontend"
 
   tags = {
     Name = "frontend-bucket"

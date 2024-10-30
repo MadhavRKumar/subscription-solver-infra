@@ -1,3 +1,3 @@
-output "ecs_cluster_name" {
-  value = aws_ecs_cluster.my_cluster.name
+output "cloudfront_domain_name" {
+  value = aws_cloudfront_distribution.frontend-distribution.domain_name
 }

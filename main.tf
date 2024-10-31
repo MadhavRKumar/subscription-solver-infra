@@ -32,7 +32,6 @@ resource "aws_ecs_task_definition" "my_task" {
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
-  // needs to be able to connect to RDS instance
   task_role_arn = aws_iam_role.ecs_task_role.arn
 }
 

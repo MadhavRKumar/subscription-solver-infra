@@ -7,6 +7,9 @@ resource "aws_db_instance" "postgres" {
   instance_class              = "db.m5.large"
   manage_master_user_password = true
   username                    = "main"
+  skip_final_snapshot = true
+  apply_immediately = true
+
   tags = {
     Name = "main"
   }
